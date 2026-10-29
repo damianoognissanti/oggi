@@ -1,0 +1,339 @@
+<title>Mammas Cinque Pani</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800;900&family=Caveat+Brush&family=Cabin+Condensed:wght@400;500;600&family=Cabin:ital,wght@0,400;0,500;1,400&family=Nothing+You+Could+Do&display=swap">
+<style>
+/* Layout: one tear-off leaf on a linen cloth; tap turns it over to the reading side. Deliberately single-look (paper doesn't go dark). */
+:root{
+  --cloth:#c9d3de; --cloth-weave:#bcc7d3;
+  --paper:#fbfaf6; --paper-back:#f6f5f0; --ink:#141414; --grey-box:#e3e3e0; --rule:#c9c9c4;
+  --sunday:#c4161c; --ballpoint:#1d3a9e;
+  --ui-fg:#1e2833; --ui-muted:#46535f; --ui-line:#a8b5c3; --ui-btn:#ffffffcc;
+  --f-num:"Archivo","Arial Black",Helvetica,sans-serif;
+  --f-hand:"Caveat Brush","Comic Sans MS",cursive;
+  --f-body:"Cabin","Gill Sans","Trebuchet MS",sans-serif;
+  --f-cond:"Cabin Condensed","Arial Narrow",sans-serif;
+  --f-pen:"Nothing You Could Do","Bradley Hand",cursive;
+  color-scheme:light;
+}
+body{background:var(--cloth);color:var(--ui-fg);font-family:var(--f-body);
+  background-image:repeating-linear-gradient(0deg,transparent 0 3px,var(--cloth-weave) 3px 4px),repeating-linear-gradient(90deg,transparent 0 3px,var(--cloth-weave) 3px 4px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+
+.nav{display:flex;align-items:center;gap:8px}
+.nav button{font:600 15px var(--f-cond);color:var(--ui-fg);background:var(--ui-btn);border:1px solid var(--ui-line);border-radius:6px;padding:8px 12px;cursor:pointer}
+.nav input{flex:1;min-width:0;font:500 15px var(--f-cond);padding:7px 8px;border:1px solid var(--ui-line);border-radius:6px;background:var(--ui-btn);color:var(--ui-fg)}
+.nav button:focus-visible,.nav input:focus-visible,.leaf:focus-visible{outline:2px solid var(--ballpoint);outline-offset:3px}
+
+/* The leaf */
+.leaf{position:relative;aspect-ratio:3/4;max-width:100%;perspective:1600px;cursor:pointer;container-type:inline-size;-webkit-tap-highlight-color:transparent}
+.inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+.leaf.flipped .inner{transform:rotateX(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--paper);color:var(--ink);
+  box-shadow:0 1px 0 #0000000d,0 14px 30px -14px #2b3a4a70;display:flex;flex-direction:column}
+.back{transform:rotateX(180deg);background:var(--paper-back)}
+
+/* Front: as on the real leaf */
+.front{padding:7cqw 6.5cqw 6cqw}
+.head{display:grid;grid-template-columns:auto 1fr;column-gap:5cqw;align-items:end}
+.num{font:900 31cqw/.76 var(--f-num);letter-spacing:-.045em;color:var(--ink)}
+.sun .num{color:var(--sunday)}
+.side{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch;text-align:right;padding-top:1cqw;min-width:0}
+.month{font:800 5.6cqw var(--f-num);letter-spacing:.02em}
+.saint{font:400 3cqw/1.18 var(--f-cond);padding-bottom:1.2cqw;padding-top:1.5cqw;text-wrap:balance}
+.bar{display:flex;justify-content:space-between;align-items:baseline;background:var(--ink);color:var(--paper);margin-top:1.6cqw;padding:.7cqw 2.4cqw}
+.sun .bar{background:var(--sunday)}
+.bar .yr{font:800 5.6cqw var(--f-num)}
+.bar .wd{font:800 6cqw var(--f-num);letter-spacing:.01em}
+.phrase-box{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:4cqw 3cqw 6cqw}
+.phrase{font-family:var(--f-hand);text-align:center;line-height:1.05;text-wrap:balance;font-size:13cqw;margin:0}
+.letter{position:absolute;right:6cqw;bottom:3.5cqw;font:400 9cqw var(--f-pen);color:var(--ballpoint);transform:rotate(-8deg)}
+
+/* Back: the reading side */
+.back{padding:6cqw}
+.panel{flex:1;background:var(--grey-box);padding:5.5cqw 6cqw;display:flex;flex-direction:column;gap:2.6cqw;min-height:0;overflow:hidden}
+.b-date{display:flex;gap:2.5cqw;align-items:flex-start;line-height:1.2;font:600 4.6cqw var(--f-cond);text-transform:uppercase;letter-spacing:.01em}
+.b-date .d{white-space:nowrap}
+.b-refs{font:400 3.3cqw/1.3 var(--f-cond);color:#2b2b2b}
+.b-quote{font:italic 4.4cqw/1.22 var(--f-body);padding-block:1cqw 2cqw;border-bottom:1px solid var(--rule)}
+.b-quote small{font-style:normal;font-size:3.1cqw;margin-left:1.6cqw;white-space:nowrap}
+.b-text{font:400 4.5cqw/1.36 var(--f-body);margin:0}
+.b-empty{font:italic 4.2cqw/1.4 var(--f-body);color:#555}
+
+.hint{font:500 14px var(--f-cond);color:var(--ui-muted);text-align:center;margin:0;min-height:1.2em}
+.note{font:400 13.5px/1.45 var(--f-body);color:var(--ui-muted);margin:0}
+.note b{font-weight:500;color:var(--ui-fg)}
+.loading .phrase,.loading .b-text{opacity:.35}
+@media (prefers-reduced-motion:reduce){.inner{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="nav">
+    <button id="prev" aria-label="Föregående dag">◀</button>
+    <input id="date" type="date" aria-label="Datum">
+    <button id="next" aria-label="Nästa dag">▶</button>
+    <button id="today">Idag</button>
+  </div>
+
+  <div class="leaf" id="leaf" role="button" tabindex="0" aria-pressed="false" aria-label="Vänd bladet">
+    <div class="inner">
+      <section class="face front" id="front">
+        <div class="head">
+          <div class="num" id="num">29</div>
+          <div class="side"><div class="month" id="month">OTTOBRE</div><div class="saint" id="saint">S. Narciso</div></div>
+        </div>
+        <div class="bar"><span class="yr" id="yr">2026</span><span class="wd" id="wd">GIOVEDI</span></div>
+        <div class="phrase-box" id="pbox"><p class="phrase" id="phrase">Non è possibile che un profeta muoia fuori di Gerusalemme</p></div>
+        <div class="letter" id="letter">G</div>
+      </section>
+      <section class="face back" id="back" aria-hidden="true">
+        <div class="panel" id="panel">
+          <div class="b-date"><span class="d" id="bd">29/10 GIO</span><span id="bsaint">S. Narciso</span></div>
+          <div class="b-refs" id="brefs">Ef 6,10-20; Sal 143; Lc 13,31-35</div>
+          <div class="b-quote"><span id="bq">Non è possibile che un profeta muoia fuori di Gerusalemme</span><small id="brif">Lc 13,33</small></div>
+          <p class="b-text" id="btext"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <p class="hint" id="hint">Tryck på bladet för att vända det</p>
+  <!-- Mammas bokstav: A, G, D, M i tur och ordning, varje dag utan avbrott över årsskiftena. Torsdag 29 oktober 2026 var Giovannis dag. -->
+  <!-- Läsningar och helgon är ifyllda till och med 31 december 2026 och kontrollerade mot liturgiska kalendrar för 2026. -->
+</div>
+
+<script>
+(()=>{
+const MESI=["GENNAIO","FEBBRAIO","MARZO","APRILE","MAGGIO","GIUGNO","LUGLIO","AGOSTO","SETTEMBRE","OTTOBRE","NOVEMBRE","DICEMBRE"];
+const GIORNI=["DOMENICA","LUNEDI","MARTEDI","MERCOLEDI","GIOVEDI","VENERDI","SABATO"];
+const GIORNI_IT=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+const $=id=>document.getElementById(id);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// [date, santo, letture, frase, rif, riflessione]
+const DATA=[
+["2026-10-29","S. Narciso","Ef 6,10-20; Sal 143; Lc 13,31-35","Non è possibile che un profeta muoia fuori di Gerusalemme","Lc 13,33","Gesù non si lascia fermare dalla paura né dalle minacce: prosegue il suo cammino verso Gerusalemme, dove donerà la vita per noi. Come una madre che raccoglie i suoi piccoli, egli desidera radunarci accanto a sé. Chiediamogli il coraggio di camminare con lui oggi, fedeli nelle piccole cose, senza scoraggiarci davanti alle difficoltà."],
+["2026-10-30","S. Germano","Fil 1,1-11; Sal 110; Lc 14,1-6","È lecito o no guarire di sabato?","Lc 14,3","Gesù non si lascia frenare dagli sguardi di chi lo osserva per coglierlo in fallo: davanti a un uomo malato, sceglie di guarire. La legge di Dio è fatta per la vita, non contro di essa. Chiediamo un cuore libero dalla paura del giudizio degli altri, pronto a fare il bene appena se ne presenta l'occasione, anche quando costa."],
+["2026-10-31","S. Lucilla","Fil 1,18b-26; Sal 41; Lc 14,1.7-11","Chiunque si esalta sarà umiliato, e chi si umilia sarà esaltato","Lc 14,11","Al banchetto della vita c'è chi corre ai primi posti e chi resta in fondo. Gesù ci insegna che il posto più bello è quello che ci viene donato, non quello che ci prendiamo. L'umiltà non è disprezzo di sé, ma verità: tutto è grazia. Oggi proviamo a lasciare agli altri il posto migliore, con un sorriso."],
+["2026-11-01","Tutti i Santi","Ap 7,2-4.9-14; Sal 23; 1Gv 3,1-3; Mt 5,1-12a","Beati i puri di cuore, perché vedranno Dio","Mt 5,8","Oggi la Chiesa festeggia la grande famiglia dei santi: non solo quelli scritti sul calendario, ma anche le persone semplici che abbiamo conosciuto e che hanno vissuto il Vangelo ogni giorno. Le beatitudini sono il loro ritratto. La santità non è per pochi: è la chiamata di ciascuno di noi, qui e ora."],
+["2026-11-02","Commemorazione dei fedeli defunti","Gb 19,1.23-27a; Sal 26; Rm 5,5-11; Gv 6,37-40","Colui che viene a me, io non lo caccerò fuori","Gv 6,37","Ricordiamo con affetto i nostri cari defunti e tutti quelli che nessuno ricorda. Gesù ci assicura che chi va a lui non sarà respinto. La morte non ha l'ultima parola: siamo attesi da un Padre che ci ama. Affidiamo a lui i nostri cari con una preghiera, e lasciamo che la speranza asciughi le nostre lacrime."],
+["2026-11-03","S. Martino de Porres","Fil 2,5-11; Sal 21; Lc 14,15-24","Beato chi prenderà cibo nel regno di Dio!","Lc 14,15","Dio prepara per tutti un grande banchetto, ma molti invitati trovano scuse: il campo, i buoi, gli impegni. Anche noi rischiamo di essere troppo occupati per accogliere il suo invito. Allora il Signore chiama i poveri e gli esclusi. Oggi facciamo spazio a Dio nella nostra giornata, e a chi di solito resta fuori dalla nostra tavola."],
+["2026-11-04","S. Carlo Borromeo","Fil 2,12-18; Sal 26; Lc 14,25-33","Chi non porta la propria croce non può essere mio discepolo","Lc 14,27","Seguire Gesù non è l'entusiasmo di un momento: è una scelta che chiede di portare ogni giorno la propria croce. Come chi costruisce una torre, siamo invitati a fare i conti con sincerità. Ma non siamo soli: è lui che cammina davanti a noi. San Carlo ci insegni a servire con generosità e fedeltà."],
+["2026-11-05","Ss. Zaccaria ed Elisabetta","Fil 3,3-8a; Sal 104; Lc 15,1-10","Rallegratevi con me, perché ho trovato la mia pecora","Lc 15,6","Il pastore lascia tutto per cercare una sola pecora smarrita, la donna spazza la casa per una moneta. Così è Dio con noi: non si rassegna a perderci. C'è gioia in cielo per ogni cuore che ritorna. Lasciamoci trovare da lui, e impariamo a guardare con la stessa tenerezza chi si è allontanato."],
+["2026-11-06","S. Leonardo","Fil 3,17–4,1; Sal 121; Lc 16,1-8","I figli di questo mondo sono più scaltri dei figli della luce","Lc 16,8","L'amministratore disonesto sa essere scaltro per salvarsi. Gesù non loda la sua disonestà, ma la sua prontezza. Quanto impegno mettiamo nelle cose del mondo, e quanto poco in quelle di Dio! Chiediamo la stessa intraprendenza per il bene: usare il tempo, i talenti e i beni che abbiamo per costruire il Regno."],
+["2026-11-07","S. Ernesto","Fil 4,10-19; Sal 111; Lc 16,9-15","Non potete servire Dio e la ricchezza","Lc 16,13","Non si possono servire due padroni. Il denaro è un buon servo ma un cattivo padrone: promette sicurezza e ci rende schiavi. Gesù ci chiede di essere fedeli nelle piccole cose, di non lasciarci possedere da ciò che possediamo. Oggi facciamo un gesto di condivisione, per ricordare a noi stessi chi è il vero Signore della nostra vita."],
+["2026-11-08","XXXII Domenica del T.O.","Sap 6,12-16; Sal 62; 1Ts 4,13-18; Mt 25,1-13","Vegliate dunque, perché non sapete né il giorno né l'ora","Mt 25,13","Le vergini sagge hanno portato con sé l'olio, le stolte no. L'attesa dello Sposo può essere lunga, e la fede si consuma se non la alimentiamo con la preghiera, l'Eucaristia, la carità. Nessuno può credere al posto nostro. Teniamo accesa la lampada, giorno dopo giorno, perché il Signore viene quando meno ce lo aspettiamo."],
+["2026-11-09","Dedicazione della Basilica Lateranense","Ez 47,1-2.8-9.12; Sal 45; 1Cor 3,9c-11.16-17; Gv 2,13-22","Egli parlava del tempio del suo corpo","Gv 2,21","Festeggiamo la cattedrale del Papa, madre di tutte le chiese. Ma il vero tempio è Gesù stesso, e in lui anche noi diventiamo pietre vive. Ogni chiesa ci ricorda che Dio vuole abitare in mezzo al suo popolo. Custodiamo le nostre chiese con amore, e ancora di più il nostro cuore, dove lo Spirito ha preso dimora."],
+["2026-11-10","S. Leone Magno","Tt 2,1-8.11-14; Sal 36; Lc 17,7-10","Siamo servi inutili. Abbiamo fatto quanto dovevamo fare","Lc 17,10","Dopo una giornata di lavoro, il servo non pretende ricompense: ha fatto ciò che doveva. Gesù ci libera dalla smania di essere applauditi. Il bene fatto nel nascondimento ha un valore immenso agli occhi di Dio. Serviamo con gioia in famiglia, al lavoro, in parrocchia, senza contare, sapendo che tutto è già dono suo."],
+["2026-11-11","S. Martino di Tours","Tt 3,1-7; Sal 22; Lc 17,11-19","Àlzati e va'; la tua fede ti ha salvato!","Lc 17,19","Dieci lebbrosi vengono guariti, ma uno solo torna a ringraziare. La gratitudine trasforma la guarigione in salvezza: riconosce il donatore oltre il dono. San Martino, che divise il mantello con il povero, ci insegna a vedere Cristo in chi ha bisogno. Oggi diciamo grazie a Dio e a chi ci vuole bene, senza darlo per scontato."],
+["2026-11-12","S. Giosafat","Fm 7-20; Sal 145; Lc 17,20-25","Il regno di Dio è in mezzo a voi!","Lc 17,21","Non serve cercare il Regno di Dio in segni straordinari o in luoghi lontani: è già in mezzo a noi, nascosto come un seme. Lo troviamo in un gesto di perdono, in una parola buona, nella fedeltà di ogni giorno. Apriamo gli occhi per riconoscerlo, e le mani per farlo crescere intorno a noi."],
+["2026-11-13","S. Diego","2Gv 1a.3-9; Sal 118; Lc 17,26-37","Chi cercherà di salvare la propria vita, la perderà","Lc 17,33","Ai tempi di Noè la gente mangiava, beveva, si sposava, senza accorgersi di nulla. La vita quotidiana è buona, ma può distrarci dall'essenziale. Gesù ci invita alla vigilanza: chi si aggrappa alla propria vita la perde, chi la dona la ritrova. Viviamo questa giornata con il cuore sveglio, attenti alla presenza di Dio."],
+["2026-11-14","S. Giocondo","3Gv 5-8; Sal 111; Lc 18,1-8","Pregare sempre, senza stancarsi mai","Lc 18,1","La vedova insistente ottiene giustizia anche da un giudice che non teme Dio. Quanto più il Padre, che ci ama, ascolterà i suoi figli! Gesù ci chiede di pregare sempre, anche quando sembra che nulla cambi. La preghiera perseverante custodisce la fede. Affidiamo oggi al Signore, con fiducia, ciò che più ci sta a cuore."],
+["2026-11-15","XXXIII Domenica del T.O.","Pr 31,10-13.19-20.30-31; Sal 127; 1Ts 5,1-6; Mt 25,14-30","Bene, servo buono e fedele, sei stato fedele nel poco","Mt 25,21","Il padrone affida ai servi i suoi talenti, a ciascuno secondo le sue capacità. Non conta quanto abbiamo ricevuto, ma come lo facciamo fruttare. La paura ci spinge a seppellire i doni; la fiducia ci fa rischiare per amore. Oggi, Giornata mondiale dei poveri, mettiamo i nostri talenti al servizio di chi è nel bisogno."],
+["2026-11-16","S. Margherita di Scozia","Ap 1,1-4; 2,1-5a; Sal 1; Lc 18,35-43","Signore, che io veda di nuovo!","Lc 18,41","Il cieco di Gerico grida e non si lascia zittire dalla folla. Gesù si ferma e gli chiede: che cosa vuoi che io faccia per te? È la domanda che rivolge anche a noi. Abbiamo il coraggio di dirgli ciò di cui abbiamo veramente bisogno? Chiediamo anche noi la luce per vedere la nostra vita con i suoi occhi."],
+["2026-11-17","S. Elisabetta d'Ungheria","Ap 3,1-6.14-22; Sal 14; Lc 19,1-10","Oggi per questa casa è venuta la salvezza","Lc 19,9","Zaccheo, piccolo di statura, sale su un albero per vedere Gesù. Ma è Gesù che lo cerca per primo e si invita a casa sua. Basta uno sguardo d'amore per cambiare una vita. Sant'Elisabetta, regina dei poveri, ci insegni ad accogliere il Signore nella nostra casa e a condividere con generosità."],
+["2026-11-18","Dedicazione delle Basiliche dei Ss. Pietro e Paolo","Ap 4,1-11; Sal 150; Lc 19,11-28","A chiunque ha, verrà dato","Lc 19,26","Il re affida ai servi una moneta ciascuno e chiede loro di farla fruttare. Chi ha osato è premiato, chi l'ha nascosta per paura resta senza nulla. Dio ha fiducia in noi più di quanto noi ne abbiamo in noi stessi. Non lasciamo che la paura di sbagliare ci impedisca di fare il bene che possiamo fare oggi."],
+["2026-11-19","S. Matilde","Ap 5,1-10; Sal 149; Lc 19,41-44","Se avessi compreso anche tu quello che porta alla pace!","Lc 19,42","Gesù piange su Gerusalemme, che non ha riconosciuto il tempo della visita di Dio. Le sue lacrime sono quelle di un amore ferito, non di un giudice. Anche oggi il Signore passa nella nostra vita e ci offre la pace. Chiediamo un cuore attento, capace di riconoscerlo nei piccoli segni della giornata."],
+["2026-11-20","S. Ottavio","Ap 10,8-11; Sal 118; Lc 19,45-48","La mia casa sarà casa di preghiera","Lc 19,46","Gesù scaccia i venditori dal tempio: la casa di Dio non è un mercato, ma il luogo dell'incontro con il Padre. Anche il nostro cuore può riempirsi di traffici e di preoccupazioni. Facciamo un po' di pulizia, lasciando spazio alla preghiera. Un momento di silenzio, oggi, può trasformare l'intera giornata."],
+["2026-11-21","Presentazione della B.V. Maria","Ap 11,4-12; Sal 143; Lc 20,27-40","Dio non è dei morti, ma dei viventi","Lc 20,38","Maria, fin da piccola, è tutta di Dio. La sua vita è un sì continuo. Gesù oggi ci ricorda che Dio è il Dio dei viventi: in lui nessuno è perduto per sempre. Con Maria impariamo a offrire a Dio la nostra vita così com'è, giorno dopo giorno, nella fiducia che egli la custodisce per l'eternità."],
+["2026-11-22","Cristo Re dell'universo","Ez 34,11-12.15-17; Sal 22; 1Cor 15,20-26.28; Mt 25,31-46","Ero straniero e mi avete accolto","Mt 25,35","Alla sera della vita saremo giudicati sull'amore. Il re dell'universo si nasconde nel povero, nell'affamato, nello straniero, nel malato, nel carcerato. Ogni gesto di bontà è fatto a lui. Il suo regno non si impone con la forza, ma cresce attraverso la carità. Oggi riconosciamolo nel volto di chi incontriamo."],
+["2026-11-23","S. Clemente I","Ap 14,1-3.4b-5; Sal 23; Lc 21,1-4","Questa vedova, così povera, ha gettato più di tutti","Lc 21,3","La vedova getta nel tesoro due monetine: tutto quello che aveva per vivere. Gli altri danno il superfluo, lei dà se stessa. Dio non guarda alla quantità, ma al cuore. Anche il nostro piccolo dono, fatto con amore, vale moltissimo ai suoi occhi. Oggi diamo qualcosa che ci costa: tempo, attenzione, perdono."],
+["2026-11-24","Ss. Andrea Dung-Lac e compagni","Ap 14,14-19; Sal 95; Lc 21,5-11","Badate di non lasciarvi ingannare","Lc 21,8","Le pietre più belle del tempio non dureranno per sempre. Gesù ci invita a non lasciarci ingannare da chi annuncia paure e catastrofi: ciò che conta è restare fedeli a lui. I martiri del Vietnam hanno dato la vita per Cristo con coraggio. Chiediamo la loro forza per restare saldi nella fede anche nelle difficoltà."],
+["2026-11-25","S. Caterina d'Alessandria","Ap 15,1-4; Sal 97; Lc 21,12-19","Con la vostra perseveranza salverete la vostra vita","Lc 21,19","Gesù non nasconde ai discepoli che verranno persecuzioni e incomprensioni, anche in famiglia. Ma promette: nemmeno un capello del vostro capo andrà perduto. La perseveranza è la virtù dei tempi difficili. Santa Caterina, giovane e coraggiosa, ci aiuti a testimoniare la fede con mitezza e fermezza."],
+["2026-11-26","S. Leonardo da Porto Maurizio","Ap 18,1-2.21-23; 19,1-3.9a; Sal 99; Lc 21,20-28","Risollevatevi e alzate il capo, perché la vostra liberazione è vicina","Lc 21,28","Quando tutto sembra crollare, Gesù ci dice di alzare il capo: la nostra liberazione è vicina. Il cristiano non guarda il futuro con angoscia, ma con speranza, perché sa chi lo attende. Le prove non sono l'ultima parola. Oggi affrontiamo le nostre preoccupazioni con lo sguardo rivolto in alto."],
+["2026-11-27","S. Virgilio","Ap 20,1-4.11–21,2; Sal 83; Lc 21,29-33","Il cielo e la terra passeranno, ma le mie parole non passeranno","Lc 21,33","Dal fico che germoglia capiamo che l'estate è vicina. Così i segni del Regno ci dicono che Dio è all'opera. Tutto passa, ma la sua parola resta: è una roccia su cui costruire la vita. Leggiamo oggi una pagina del Vangelo con calma, lasciando che sia lei a orientare i nostri passi."],
+["2026-11-28","S. Giacomo della Marca","Ap 22,1-7; Sal 94; Lc 21,34-36","Vegliate in ogni momento pregando","Lc 21,36","L'ultimo giorno dell'anno liturgico ci invita alla vigilanza: che i nostri cuori non si appesantiscano negli affanni. Vegliare è pregare, è vivere ogni giorno come un dono. Ringraziamo il Signore per l'anno trascorso e prepariamoci con cuore nuovo ad accogliere l'Avvento."],
+["2026-11-29","I Domenica di Avvento","Is 63,16b-17.19b; 64,2-7; Sal 79; 1Cor 1,3-9; Mc 13,33-37","Fate attenzione, vegliate, perché non sapete quando è il momento","Mc 13,33","Inizia un nuovo anno liturgico. L'Avvento è il tempo dell'attesa: il Signore è venuto, viene e verrà. Gesù ci chiede di vegliare, come il portiere che attende il ritorno del padrone. Accendiamo la prima candela della corona e chiediamo un cuore sveglio, che sappia riconoscerlo nella vita di ogni giorno."],
+["2026-11-30","S. Andrea apostolo","Rm 10,9-18; Sal 18; Mt 4,18-22","Venite dietro a me, vi farò pescatori di uomini","Mt 4,19","Andrea e suo fratello Pietro gettano le reti nel lago quando Gesù li chiama. Lasciano subito tutto e lo seguono. La loro prontezza ci interroga: che cosa ci trattiene dal seguirlo con tutto il cuore? Sant'Andrea, che portò a Gesù il fratello, ci insegni a condurre a lui le persone che amiamo."],
+["2026-12-01","S. Eligio","Is 11,1-10; Sal 71; Lc 10,21-24","Beati gli occhi che vedono ciò che voi vedete","Lc 10,23","Gesù esulta nello Spirito perché il Padre ha rivelato i suoi segreti ai piccoli. Non servono grandi studi per conoscere Dio, ma un cuore semplice e aperto. Beati noi, che possiamo vedere e ascoltare ciò che molti profeti hanno desiderato. In questo Avvento torniamo bambini davanti al mistero di Dio."],
+["2026-12-02","S. Bibiana","Is 25,6-10a; Sal 22; Mt 15,29-37","Sento compassione per la folla","Mt 15,32","Gesù vede la folla stanca e affamata, e ne ha compassione. Con pochi pani e pochi pesci sazia migliaia di persone. Anche il poco che abbiamo, messo nelle sue mani, diventa abbondanza. In questo Avvento offriamo a Dio la nostra povertà e lasciamo che lui la trasformi in dono per gli altri."],
+["2026-12-03","S. Francesco Saverio","Is 26,1-6; Sal 117; Mt 7,21.24-27","Ha costruito la sua casa sulla roccia","Mt 7,24","Non basta dire «Signore, Signore»: bisogna fare la volontà del Padre. Chi ascolta e mette in pratica costruisce la casa sulla roccia, e le tempeste non la abbattono. San Francesco Saverio portò il Vangelo fino ai confini della terra. Chiediamo la grazia di vivere con coerenza ciò che crediamo."],
+["2026-12-04","S. Giovanni Damasceno","Is 29,17-24; Sal 26; Mt 9,27-31","Avvenga per voi secondo la vostra fede","Mt 9,29","Due ciechi seguono Gesù gridando: abbi pietà di noi! Gesù chiede loro: credete che io possa fare questo? La loro fede apre i loro occhi. Anche noi abbiamo zone di buio nella nostra vita. Portiamole a Gesù con fiducia: egli può illuminare ciò che noi non riusciamo a vedere."],
+["2026-12-05","S. Saba","Is 30,19-21.23-26; Sal 146; Mt 9,35–10,1.6-8","Gratuitamente avete ricevuto, gratuitamente date","Mt 10,8","Gesù manda i Dodici ad annunciare che il Regno è vicino e a guarire ogni infermità. Tutto ciò che abbiamo è dono gratuito di Dio: la vita, la fede, l'amore. Per questo siamo chiamati a donare senza calcoli. Oggi facciamo un gesto di bontà gratuita, senza aspettarci nulla in cambio."],
+["2026-12-06","II Domenica di Avvento","Is 40,1-5.9-11; Sal 84; 2Pt 3,8-14; Mc 1,1-8","Preparate la via del Signore, raddrizzate i suoi sentieri","Mc 1,3","Giovanni Battista grida nel deserto: preparate la via del Signore. L'Avvento è tempo di conversione: colmare le valli della sfiducia, abbassare i monti dell'orgoglio, raddrizzare ciò che è storto. San Nicola, che portava doni in segreto, ci ricorda che la gioia più grande è preparare la strada alla gioia degli altri."],
+["2026-12-07","S. Ambrogio","Is 35,1-10; Sal 84; Lc 5,17-26","Oggi abbiamo visto cose prodigiose","Lc 5,26","Gli amici del paralitico, pur di portarlo a Gesù, scoperchiano il tetto. La loro fede ottiene il perdono e la guarigione. Chi conosciamo che ha bisogno di essere portato al Signore? Possiamo farlo con la preghiera e con la nostra vicinanza. Sant'Ambrogio, pastore coraggioso, ci insegni a non arrenderci."],
+["2026-12-08","Immacolata Concezione","Gen 3,9-15.20; Sal 97; Ef 1,3-6.11-12; Lc 1,26-38","Rallègrati, piena di grazia: il Signore è con te","Lc 1,28","Dio ha preparato per suo Figlio una madre tutta bella, senza macchia di peccato. Maria è l'aurora della salvezza. All'annuncio dell'angelo risponde con fiducia, anche se non comprende tutto. Guardiamo a lei in questo Avvento: ci insegna ad accogliere la Parola e a dire il nostro sì a Dio ogni giorno."],
+["2026-12-09","S. Juan Diego","Is 40,25-31; Sal 102; Mt 11,28-30","Venite a me, voi tutti che siete stanchi e oppressi","Mt 11,28","Gesù chiama a sé chi è stanco e oppresso, e promette ristoro. Il suo giogo è dolce e il suo peso leggero, perché lo porta insieme a noi. Quante fatiche portiamo da soli! In questo Avvento deponiamo nelle sue mani ciò che ci pesa, e impariamo da lui la mitezza e l'umiltà del cuore."],
+["2026-12-10","B.V. Maria di Loreto","Is 41,13-20; Sal 144; Mt 11,11-15","Fra i nati da donna non è sorto alcuno più grande di Giovanni","Mt 11,11","Giovanni Battista è il più grande tra i nati da donna, eppure il più piccolo nel Regno è più grande di lui. Nel Regno di Dio la grandezza si misura con l'amore e l'umiltà. Oggi ricordiamo la Santa Casa di Loreto, dove il Verbo si è fatto carne: anche le nostre case possono diventare luoghi in cui Dio abita."],
+["2026-12-11","S. Damaso I","Is 48,17-19; Sal 1; Mt 11,16-19","La sapienza è stata riconosciuta giusta per le opere che essa compie","Mt 11,19","Come bambini capricciosi, non siamo mai contenti: Giovanni digiunava e lo accusavano, Gesù mangiava con i peccatori e lo criticavano. Spesso troviamo scuse per non ascoltare Dio. Chiediamo un cuore docile, che sappia riconoscere la sua sapienza in ciò che egli opera, anche quando ci sorprende."],
+["2026-12-12","B.V. Maria di Guadalupe","Sir 48,1-4.9-11; Sal 79; Mt 17,10-13","Elia è già venuto e non l'hanno riconosciuto","Mt 17,12","Elia è già venuto, dice Gesù, e non l'hanno riconosciuto. Dio continua a mandare i suoi messaggeri, ma spesso non li vediamo. Maria di Guadalupe apparve a un umile indio e ci ricorda che Dio sceglie i piccoli. Apriamo gli occhi per riconoscere i segni della sua presenza nella nostra vita."],
+["2026-12-13","III Domenica di Avvento","Is 61,1-2a.10-11; Sal Lc 1,46-54; 1Ts 5,16-24; Gv 1,6-8.19-28","In mezzo a voi sta uno che voi non conoscete","Gv 1,26","È la domenica della gioia: il Signore è vicino! Giovanni Battista non si mette al centro, ma indica un altro, che sta in mezzo a noi e che non conosciamo. Santa Lucia, il cui nome ricorda la luce, ci aiuti a riconoscere Gesù presente nella nostra vita e a rendere testimonianza alla luce con gioia."],
+["2026-12-14","S. Giovanni della Croce","Nm 24,2-7.15-17a; Sal 24; Mt 21,23-27","Con quale autorità fai queste cose?","Mt 21,23","I capi del popolo chiedono a Gesù con quale autorità agisca, ma non sono disposti ad ascoltare la risposta: non cercano la verità, difendono le proprie posizioni. San Giovanni della Croce ci insegna che Dio si incontra nel silenzio e nella notte della fede. Chiediamo un cuore sincero e disponibile."],
+["2026-12-15","S. Virginia","Sof 3,1-2.9-13; Sal 33; Mt 21,28-32","I pubblicani e le prostitute vi passano avanti nel regno di Dio","Mt 21,31","Il primo figlio dice no, ma poi va a lavorare nella vigna; il secondo dice sì, ma non va. Non contano le belle parole, ma i fatti. Dio non si stanca di aspettare il nostro pentimento. In questo Avvento trasformiamo i nostri buoni propositi in gesti concreti di amore."],
+["2026-12-16","S. Adelaide","Is 45,6b-8.18.21b-25; Sal 84; Lc 7,19-23","Ai poveri è annunciata la buona notizia","Lc 7,22","Giovanni manda a chiedere a Gesù: sei tu colui che deve venire? Gesù risponde con i fatti: i ciechi vedono, gli zoppi camminano, ai poveri è annunciato il Vangelo. Anche oggi Dio si rivela attraverso le opere di misericordia. Siamo noi, con la nostra carità, il segno che il Signore è vicino."],
+["2026-12-17","S. Lazzaro","Gen 49,2.8-10; Sal 71; Mt 1,1-17","Giacobbe generò Giuseppe, lo sposo di Maria, dalla quale è nato Gesù","Mt 1,16","Inizia la novena di Natale. La lunga genealogia di Gesù ci mostra che Dio entra nella storia degli uomini, con le sue luci e le sue ombre. Nessuna storia è troppo complicata per lui. Anche la nostra famiglia, con le sue fragilità, è un luogo dove Dio vuole nascere."],
+["2026-12-18","S. Graziano","Ger 23,5-8; Sal 71; Mt 1,18-24","Giuseppe fece come gli aveva ordinato l'angelo del Signore","Mt 1,24","Giuseppe, uomo giusto, non comprende ciò che accade, ma si fida di Dio. Nel silenzio accoglie Maria e il bambino: è il custode del Redentore. Impariamo da lui a fare la volontà di Dio senza tante parole, con fedeltà e tenerezza, prendendoci cura di chi ci è affidato."],
+["2026-12-19","S. Anastasio I","Gdc 13,2-7.24-25a; Sal 70; Lc 1,5-25","Non temere, Zaccaria, la tua preghiera è stata esaudita","Lc 1,13","Zaccaria ed Elisabetta hanno pregato a lungo per avere un figlio, e Dio li esaudisce quando ormai non ci speravano più. I tempi di Dio non sono i nostri, ma nessuna preghiera va perduta. Affidiamo al Signore le nostre attese e i desideri più profondi, con la certezza che egli ci ascolta."],
+["2026-12-20","IV Domenica di Avvento","2Sam 7,1-5.8b-12.14a.16; Sal 88; Rm 16,25-27; Lc 1,26-38","Ecco la serva del Signore: avvenga per me secondo la tua parola","Lc 1,38","L'angelo Gabriele porta a Maria un annuncio che cambia la storia. Lei è turbata, domanda, e poi si affida: avvenga per me secondo la tua parola. Il suo sì apre la porta a Dio. A pochi giorni dal Natale, chiediamo a Maria di insegnarci a fare spazio a Gesù nella nostra vita."],
+["2026-12-21","S. Pietro Canisio","Ct 2,8-14; Sal 32; Lc 1,39-45","Beata colei che ha creduto","Lc 1,45","Maria si mette in viaggio in fretta verso la casa di Elisabetta. Chi porta Gesù dentro di sé non può restare fermo: va incontro agli altri. Elisabetta la proclama beata perché ha creduto. Anche noi siamo beati quando ci fidiamo della Parola di Dio e la portiamo con gioia a chi incontriamo."],
+["2026-12-22","S. Francesca Cabrini","1Sam 1,24-28; Sal 1Sam 2,1-8; Lc 1,46-56","L'anima mia magnifica il Signore","Lc 1,46","Il Magnificat è il canto di Maria, che vede la storia con gli occhi di Dio: egli rovescia i potenti e innalza gli umili, ricolma di beni gli affamati. È un canto di gioia e di speranza. Facciamo nostro oggi il canto di Maria, ringraziando il Signore per le grandi cose che ha fatto nella nostra vita."],
+["2026-12-23","S. Giovanni da Kety","Ml 3,1-4.23-24; Sal 24; Lc 1,57-66","Giovanni è il suo nome","Lc 1,63","Alla nascita del bambino tutti vogliono chiamarlo come il padre, ma Elisabetta e Zaccaria scelgono il nome indicato da Dio: Giovanni, cioè «Dio fa grazia». Zaccaria, che era rimasto muto, ritrova la parola e benedice Dio. Anche noi, quando obbediamo a Dio, ritroviamo la gioia di lodarlo."],
+["2026-12-24","Vigilia di Natale","2Sam 7,1-5.8b-12.14a.16; Sal 88; Lc 1,67-79","Ci visiterà un sole che sorge dall'alto","Lc 1,78","Zaccaria canta il Benedictus: Dio ha visitato il suo popolo, come un sole che sorge dall'alto per illuminare chi sta nelle tenebre. Questa notte quel sole sorgerà a Betlemme. Prepariamo il cuore nel silenzio e nella preghiera: Gesù viene per portare luce e pace nelle nostre case."],
+["2026-12-25","Natale del Signore","Is 52,7-10; Sal 97; Eb 1,1-6; Gv 1,1-18","E il Verbo si fece carne e venne ad abitare in mezzo a noi","Gv 1,14","Il Figlio di Dio si è fatto bambino e ha posto la sua tenda in mezzo a noi. Dio non è lontano: ha un volto umano, piccolo e fragile. In lui ogni vita umana acquista una dignità infinita. Contempliamo il presepio con stupore e gratitudine: Dio è con noi, per sempre. Buon Natale!"],
+["2026-12-26","S. Stefano","At 6,8-10.12; 7,54-60; Sal 30; Mt 10,17-22","Chi avrà perseverato fino alla fine sarà salvato","Mt 10,22","Il giorno dopo Natale la Chiesa ricorda il primo martire. Stefano, pieno di Spirito Santo, muore perdonando i suoi uccisori, come Gesù. Il Bambino di Betlemme ci chiama a un amore che arriva fino al dono di sé. Chiediamo la grazia di perdonare chi ci ha fatto del male."],
+["2026-12-27","Santa Famiglia","Gen 15,1-6; 21,1-3; Sal 104; Eb 11,8.11-12.17-19; Lc 2,22-40","Il bambino cresceva e si fortificava, pieno di sapienza","Lc 2,40","Maria e Giuseppe presentano Gesù al tempio. Il vecchio Simeone e la profetessa Anna riconoscono in lui la salvezza attesa da tanto tempo. La famiglia di Nazaret ci insegna la fede vissuta nella vita di ogni giorno. Preghiamo per le nostre famiglie, perché siano luoghi di amore, di ascolto e di preghiera."],
+["2026-12-28","Ss. Innocenti martiri","1Gv 1,5–2,2; Sal 123; Mt 2,13-18","Àlzati, prendi con te il bambino e sua madre e fuggi in Egitto","Mt 2,13","I bambini di Betlemme danno la vita per Cristo senza saperlo. Oggi ricordiamo tutti i bambini innocenti che soffrono a causa della violenza e della guerra. Giuseppe, obbediente, protegge Gesù e Maria fuggendo in Egitto. Chiediamo al Signore di custodire i più piccoli e di renderci difensori della vita."],
+["2026-12-29","S. Tommaso Becket","1Gv 2,3-11; Sal 95; Lc 2,22-35","I miei occhi hanno visto la tua salvezza","Lc 2,30","Simeone prende tra le braccia il Bambino e benedice Dio: i suoi occhi hanno visto la salvezza. Ha atteso tutta la vita, e la sua speranza non è stata delusa. Anche noi possiamo incontrare Gesù e lasciarci riempire di pace. San Tommaso Becket ci insegni a restare fedeli a Dio senza compromessi."],
+["2026-12-30","S. Eugenio","1Gv 2,12-17; Sal 95; Lc 2,36-40","Parlava del bambino a quanti aspettavano la redenzione","Lc 2,38","Anna, vedova anziana, non si allontana mai dal tempio e serve Dio notte e giorno. Quando vede Gesù, loda Dio e ne parla a tutti. La sua fedeltà paziente è ricompensata. Ringraziamo il Signore per le persone anziane della nostra vita, che con la loro preghiera ci accompagnano e ci trasmettono la fede."],
+["2026-12-31","S. Silvestro I","1Gv 2,18-21; Sal 95; Gv 1,1-18","In principio era il Verbo","Gv 1,1","All'ultimo giorno dell'anno, il Vangelo ci riporta al principio: in principio era il Verbo. Tutto è stato fatto per mezzo di lui, anche il tempo che ci è stato donato. Ringraziamo Dio per l'anno che si chiude, affidandogli le gioie e le fatiche, e chiediamo la sua benedizione per l'anno nuovo."]
+];
+// All saints of the day: liturgical calendar first, then the names in Italian popular calendars. ";" starts a new line.
+const SANTI={
+"2026-10-29":"S. Narciso, S. Ermelinda, S. Massimiliano",
+"2026-10-30":"S. Germano, S. Gerardo",
+"2026-10-31":"S. Lucilla, S. Quintino, S. Alfonso Rodríguez",
+"2026-11-03":"S. Martino de Porres, S. Silvia",
+"2026-11-04":"S. Carlo Borromeo, Ss. Vitale e Agricola",
+"2026-11-05":"Ss. Zaccaria ed Elisabetta, B. Guido Maria Conforti",
+"2026-11-07":"S. Ernesto, S. Prosdocimo",
+"2026-11-08":"XXXII Domenica del T.O.;Ss. Quattro Coronati, S. Goffredo",
+"2026-11-09":"Dedicazione della Basilica Lateranense;S. Oreste, S. Agrippino",
+"2026-11-12":"S. Giosafat, S. Renato",
+"2026-11-13":"S. Francesca S. Cabrini, S. Diego, S. Omobono",
+"2026-11-14":"S. Giocondo, S. Clementino",
+"2026-11-15":"XXXIII Domenica del T.O.;S. Alberto Magno",
+"2026-11-16":"S. Margherita di Scozia, S. Geltrude",
+"2026-11-18":"Dedicazione delle Basiliche dei Ss. Pietro e Paolo;S. Oddone, S. Romano",
+"2026-11-19":"S. Matilde, S. Fausto",
+"2026-11-20":"Ss. Ottavio, Avventore e Solutore",
+"2026-11-22":"Cristo Re dell'universo;S. Cecilia",
+"2026-11-23":"S. Clemente I, S. Colombano",
+"2026-11-24":"Ss. Andrea Dung-Lac e compagni, S. Flora",
+"2026-11-26":"S. Leonardo da Porto Maurizio, S. Corrado, S. Bellino",
+"2026-11-27":"S. Virgilio, S. Gustavo, S. Massimo",
+"2026-11-29":"I Domenica di Avvento;S. Saturnino, S. Francesco Antonio Fasani",
+"2026-12-01":"S. Eligio, S. Ansano",
+"2026-12-02":"S. Bibiana, S. Savino",
+"2026-12-04":"S. Giovanni Damasceno, S. Barbara",
+"2026-12-05":"S. Saba, S. Giulio",
+"2026-12-06":"II Domenica di Avvento;S. Nicola",
+"2026-12-09":"S. Juan Diego, S. Siro",
+"2026-12-12":"B.V. Maria di Guadalupe, S. Giovanna F. de Chantal",
+"2026-12-13":"III Domenica di Avvento;S. Lucia",
+"2026-12-14":"S. Giovanni della Croce, S. Pompeo",
+"2026-12-15":"S. Virginia Centurione Bracelli, S. Valeriano, B. Maria Vittoria De Fornari",
+"2026-12-16":"S. Adelaide, S. Adone",
+"2026-12-19":"S. Anastasio I, S. Fausta, S. Dario",
+"2026-12-20":"IV Domenica di Avvento;S. Liberato",
+"2026-12-23":"S. Giovanni da Kety, S. Vittoria",
+"2026-12-24":"Vigilia di Natale;S. Delfino, S. Adele, S. Irmina",
+"2026-12-27":"Santa Famiglia;S. Giovanni apostolo",
+"2026-12-30":"S. Eugenio, S. Ruggero, S. Fulgenzio"
+};
+const EMBED={};DATA.forEach(([d,s,l,f,r,t])=>EMBED[d]={santo:SANTI[d]||s,letture:l,frase:f,rif:r,riflessione:t});
+
+// ---- dates (UTC to avoid DST drift) ----
+const D=(y,m,d)=>new Date(Date.UTC(y,m,d));
+const add=(dt,n)=>new Date(dt.getTime()+n*864e5);
+const diff=(a,b)=>Math.round((a-b)/864e5);
+const iso=dt=>dt.toISOString().slice(0,10);
+const parse=s=>{const[y,m,d]=s.split("-").map(Number);return D(y,m-1,d)};
+function todayLocal(){const n=new Date();return D(n.getFullYear(),n.getMonth(),n.getDate())}
+
+// Locked: 2026-10-29 was G (Giovanni). Order A, G, D, M, unbroken across years.
+const ORDER=["A","G","D","M"],ANCHOR=D(2026,9,29),ANCHOR_IDX=1;
+function letterFor(dt){const n=ORDER.length;return ORDER[(((ANCHOR_IDX+diff(dt,ANCHOR))%n)+n)%n]}
+
+// ---- liturgical season (context for days beyond the filled-in ones) ----
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return D(y,mo-1,da)}
+function advent1(y){const x=D(y,11,25),w=x.getUTCDay();return add(x,-(w===0?7:w)-21)}
+function baptism(y){const e=D(y,0,6),w=e.getUTCDay();return add(e,7-w)}
+function roman(n){const v=[[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];let s="";v.forEach(([a,r])=>{while(n>=a){s+=r;n-=a}});return s}
+function liturgia(dt){
+  const y=dt.getUTCFullYear(),w=dt.getUTCDay(),gn=GIORNI_IT[w],E=easter(y),A=advent1(y),B=baptism(y),CK=add(A,-7);
+  const Y=dt>=A?y+1:y,ciclo=["C","A","B"][Y%3],fer=Y%2?"dispari (I)":"pari (II)";
+  const wk=(n,t)=>w===0?`${roman(n)} Domenica ${t}`:`${gn} della ${roman(n)} settimana ${t}`;
+  let lab;
+  if(dt>=A&&dt<D(y,11,25)) lab=wk(Math.floor(diff(dt,A)/7)+1,"di Avvento");
+  else if(dt>=D(y,11,25)||dt<B) lab=`${gn} del Tempo di Natale`;
+  else if(+dt===+B) lab="Battesimo del Signore";
+  else if(dt<add(E,-46)) lab=wk(Math.floor(diff(dt,B)/7)+1,"del Tempo Ordinario");
+  else if(+dt===+add(E,-46)) lab="Mercoledì delle Ceneri";
+  else if(dt<add(E,-42)) lab=`${gn} dopo le Ceneri`;
+  else if(dt<add(E,-7)) lab=wk(Math.floor(diff(dt,add(E,-42))/7)+1,"di Quaresima");
+  else if(dt<E) lab=w===0?"Domenica delle Palme":`${gn} della Settimana Santa`;
+  else if(dt<add(E,7)) lab=w===0?"Pasqua di Risurrezione":`${gn} fra l'Ottava di Pasqua`;
+  else if(dt<add(E,49)) lab=wk(Math.floor(diff(dt,E)/7)+1,"di Pasqua");
+  else if(+dt===+add(E,49)) lab="Domenica di Pentecoste";
+  else lab=wk(34-Math.ceil(diff(CK,dt)/7),"del Tempo Ordinario");
+  return `${lab}; anno liturgico ${ciclo} per le domeniche, anno ${fer} per le ferie`;
+}
+
+let cur=todayLocal(), sampleFn=null, ctl=null;
+const content=key=>EMBED[key]||store.get("cp2:"+key)||null;
+
+function fitPhrase(){const box=$("pbox"),p=$("phrase"),cs=getComputedStyle(box);
+  const room=box.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  let s=13;p.style.fontSize=s+"cqw";
+  while(s>6&&(p.offsetHeight>room||p.scrollWidth>p.clientWidth+1)){s-=.4;p.style.fontSize=s+"cqw"}}
+function fitBack(){const panel=$("panel"),t=$("btext");let s=4.5;t.style.fontSize=s+"cqw";
+  while(s>3&&panel.scrollHeight>panel.clientHeight+1){s-=.15;t.style.fontSize=s+"cqw"}}
+function fit(){fitPhrase();fitBack()}
+
+function setFlip(on){$("leaf").classList.toggle("flipped",on);$("leaf").setAttribute("aria-pressed",String(on));
+  $("front").setAttribute("aria-hidden",String(on));$("back").setAttribute("aria-hidden",String(!on));
+  $("hint").textContent=on?"Tryck igen för att vända tillbaka":"Tryck på bladet för att vända det"}
+
+function render(){
+  const key=iso(cur),w=cur.getUTCDay(),d=cur.getUTCDate(),m=cur.getUTCMonth();
+  setFlip(false);
+  $("date").value=key;
+  $("leaf").classList.toggle("sun",w===0);
+  $("num").textContent=d;$("month").textContent=MESI[m];$("yr").textContent=cur.getUTCFullYear();$("wd").textContent=GIORNI[w];
+  $("bd").textContent=`${d}/${m+1} ${GIORNI[w].slice(0,3)}`;
+  $("letter").textContent=letterFor(cur);
+  const c=content(key);
+  fill(c);
+  if(!c) fetchDay(key);
+}
+function fill(c){
+  c=c||{santo:"",letture:"",frase:"",rif:"",riflessione:""};
+  const lines=String(c.santo||"").split(";").map(s=>s.trim()).filter(Boolean);
+  for(const id of ["saint","bsaint"]){const el=$(id);el.textContent="";lines.forEach(t=>{const d=document.createElement("div");d.textContent=t;el.append(d)})}
+  $("brefs").textContent=c.letture;
+  $("phrase").textContent=c.frase;$("bq").textContent=c.frase;$("brif").textContent=c.rif;
+  const t=$("btext");t.className=c.riflessione?"b-text":"b-text b-empty";
+  t.textContent=c.riflessione||(sampleFn?"Hämtar dagens läsning…":"Det här datumet är inte ifyllt ännu.");
+  requestAnimationFrame(fit)}
+
+async function fetchDay(key){
+  if(!sampleFn) return;
+  ctl?.abort();ctl=new AbortController();const my=ctl;const dt=parse(key);
+  $("leaf").classList.add("loading");fill(null);
+  const prompt=`Sei un esperto del calendario liturgico cattolico romano usato in Italia (Messale e Lezionario CEI; Epifania il 6 gennaio, Ascensione e Corpus Domini alla domenica; numerazione dei salmi greca, es. "Sal 22" per il Pastore).
+Prepara il foglietto di un calendario cattolico a strappo per il ${dt.getUTCDate()} ${MESI[dt.getUTCMonth()].toLowerCase()} ${dt.getUTCFullYear()} (${GIORNI_IT[dt.getUTCDay()]}).
+Calcolo del tempo liturgico, da verificare: ${liturgia(dt)}. Se cade una solennità o festa con letture proprie, usa quelle.
+Rispondi SOLO con un oggetto JSON:
+- "santo": santo o celebrazione del giorno, breve (es. "S. Narciso"; per le domeniche il nome della domenica, es. "II Domenica di Avvento").
+- "letture": riferimenti delle letture della Messa, formato "Ef 6,10-20; Sal 143; Lc 13,31-35".
+- "frase": un versetto chiave del Vangelo del giorno (CEI 2008), al massimo 14 parole, senza virgolette.
+- "rif": riferimento del versetto, es. "Lc 13,33".
+- "riflessione": meditazione originale di 55-70 parole, prima persona plurale, calda e semplice.`;
+  try{
+    const r=await sampleFn.json(prompt,{signal:my.signal,modelTier:"complex",cache:{gcTime:864e5}});
+    if(!r||typeof r!=="object"||!r.frase) throw {code:"invalid_json"};
+    const c={santo:String(r.santo||""),letture:String(r.letture||""),frase:String(r.frase||""),rif:String(r.rif||""),riflessione:String(r.riflessione||"")};
+    store.set("cp2:"+key,c);
+    if(iso(cur)===key) fill(c);
+  }catch(e){
+    if(e&&e.code==="cancelled")return;
+    if(e&&(e.code==="not_granted"||e.code==="sampling_disabled")) sampleFn=null;
+    if(iso(cur)===key){fill(null);$("btext").textContent="Det gick inte att hämta läsningen för det här datumet."}
+  }finally{if(ctl===my)$("leaf").classList.remove("loading")}
+}
+
+$("leaf").addEventListener("click",()=>setFlip(!$("leaf").classList.contains("flipped")));
+$("leaf").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setFlip(!$("leaf").classList.contains("flipped"))}});
+$("prev").onclick=()=>{cur=add(cur,-1);render()};
+$("next").onclick=()=>{cur=add(cur,1);render()};
+$("today").onclick=()=>{cur=todayLocal();render()};
+$("date").onchange=e=>{if(e.target.value){cur=parse(e.target.value);render()}};
+window.addEventListener("resize",fit);
+if(document.fonts)document.fonts.ready.then(fit);
+
+render();
+(async()=>{try{sampleFn=await window.claude?.use?.("sample")}catch(e){sampleFn=null}
+  if(sampleFn&&!content(iso(cur)))fetchDay(iso(cur))})();
+})();
+</script>
